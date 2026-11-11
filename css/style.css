@@ -1,37 +1,368 @@
-:root{--bg:#F3F6FB;--card:#fff;--ink:#0F172A;--mute:#5B6B82;--line:#D9E1EC;--acc:#0D9488;--accsoft:#CCF3EE;--warn:#B45309;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F172A;--card:#1E293B;--ink:#F8FAFC;--mute:#A9B8CE;--line:#334155;--acc:#2DD4BF;--accsoft:#134E4A;--warn:#FBBF24}}
-:root[data-theme="dark"]{--bg:#0F172A;--card:#1E293B;--ink:#F8FAFC;--mute:#A9B8CE;--line:#334155;--acc:#2DD4BF;--accsoft:#134E4A;--warn:#FBBF24}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
-main{max-width:860px;margin:0 auto;padding:28px 20px 64px}
-header{display:flex;justify-content:flex-end;align-items:center;margin-bottom:36px}
-.logo{font-weight:800;font-size:22px;letter-spacing:-.02em}.logo i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--acc);margin-right:8px}
-h1{font-size:clamp(30px,6vw,46px);line-height:1.1;letter-spacing:-.03em;margin:0 0 14px;max-width:16ch}
-.lead{color:var(--mute);max-width:56ch;margin:0 0 28px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:20px}
-h2{font-size:19px;margin:0 0 12px;letter-spacing:-.01em}
-.drop{border:2px dashed var(--line);border-radius:14px;padding:30px 16px;text-align:center;cursor:pointer;transition:.15s}
-.drop:hover,.drop.on,.drop:focus-visible{border-color:var(--acc);background:var(--accsoft);outline:none}
-.drop b{display:block;font-size:17px}.drop span{color:var(--mute);font-size:14px}
-textarea{width:100%;min-height:120px;margin-top:14px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;resize:vertical}
-button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:11px 18px;cursor:pointer;background:var(--acc);color:#fff}
-button.g{background:transparent;color:var(--ink);border:1px solid var(--line)}
-button:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button:not(.g){color:#0F172A}}
-:root[data-theme="dark"] button:not(.g){color:#0F172A}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
-.msg{font-size:14px;color:var(--mute);margin-top:10px}.err{color:var(--warn)}
-#result{display:none}
-ul.t{margin:0;padding-left:20px}ul.t li{margin:6px 0}
-.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 4px}.bar div{height:100%;width:0;background:var(--acc);transition:width .3s}
-ol.steps{list-style:none;margin:18px 0 0;padding:0 0 0 0;position:relative}
-ol.steps::before{content:"";position:absolute;left:13px;top:14px;bottom:14px;width:2px;background:var(--line)}
-ol.steps li{position:relative;padding:8px 0 8px 44px}
-ol.steps input{position:absolute;left:0;top:10px;width:28px;height:28px;margin:0;appearance:none;border-radius:50%;border:2px solid var(--line);background:var(--card);cursor:pointer;display:grid;place-content:center}
-ol.steps input:checked{background:var(--acc);border-color:var(--acc)}
-ol.steps input:checked::after{content:"✓";color:#fff;font-weight:800;font-size:15px}
-ol.steps label{cursor:pointer}ol.steps li.done label{color:var(--mute);text-decoration:line-through}
-.note{font-size:13px;color:var(--mute)}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* ==========================================================================
+   Taskly - style.css
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. Variabel warna & tema
+   -------------------------------------------------------------------------- */
+
+/* Tema terang (default) */
+:root {
+  --bg: #F3F6FB;
+  --card: #FFFFFF;
+  --ink: #0F172A;
+  --mute: #5B6B82;
+  --line: #D9E1EC;
+  --acc: #0D9488;
+  --accsoft: #CCF3EE;
+  --warn: #B45309;
+
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Tema gelap otomatis (ikut pengaturan perangkat) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F172A;
+    --card: #1E293B;
+    --ink: #F8FAFC;
+    --mute: #A9B8CE;
+    --line: #334155;
+    --acc: #2DD4BF;
+    --accsoft: #134E4A;
+    --warn: #FBBF24;
+  }
+}
+
+/* Tema gelap manual (tombol "Ganti tema") */
+:root[data-theme="dark"] {
+  --bg: #0F172A;
+  --card: #1E293B;
+  --ink: #F8FAFC;
+  --mute: #A9B8CE;
+  --line: #334155;
+  --acc: #2DD4BF;
+  --accsoft: #134E4A;
+  --warn: #FBBF24;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Reset & dasar
+   -------------------------------------------------------------------------- */
+
+html {
+  scroll-padding-top: env(safe-area-inset-top, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.6 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. Layout
+   -------------------------------------------------------------------------- */
+
+main {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 36px;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 14px;
+}
+
+#result {
+  display: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Tipografi
+   -------------------------------------------------------------------------- */
+
+.logo {
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -.02em;
+}
+
+.logo i {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--acc);
+  margin-right: 8px;
+}
+
+h1 {
+  font-size: clamp(30px, 6vw, 46px);
+  line-height: 1.1;
+  letter-spacing: -.03em;
+  margin: 0 0 14px;
+  max-width: 16ch;
+}
+
+h2 {
+  font-size: 19px;
+  margin: 0 0 12px;
+  letter-spacing: -.01em;
+}
+
+.lead {
+  color: var(--mute);
+  max-width: 56ch;
+  margin: 0 0 28px;
+}
+
+.note {
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.msg {
+  font-size: 14px;
+  color: var(--mute);
+  margin-top: 10px;
+}
+
+.err {
+  color: var(--warn);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. Kartu
+   -------------------------------------------------------------------------- */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Area upload & input
+   -------------------------------------------------------------------------- */
+
+.drop {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 30px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: .15s;
+}
+
+.drop:hover,
+.drop.on,
+.drop:focus-visible {
+  border-color: var(--acc);
+  background: var(--accsoft);
+  outline: none;
+}
+
+.drop b {
+  display: block;
+  font-size: 17px;
+}
+
+.drop span {
+  color: var(--mute);
+  font-size: 14px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 120px;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+  font: inherit;
+  resize: vertical;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Tombol
+   -------------------------------------------------------------------------- */
+
+button {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 18px;
+  cursor: pointer;
+  background: var(--acc);
+  color: #FFFFFF;
+}
+
+/* Tombol sekunder (outline) */
+button.g {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+/* Fokus keyboard */
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--acc);
+  outline-offset: 2px;
+}
+
+/* Teks tombol utama di tema gelap */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) button:not(.g) {
+    color: #0F172A;
+  }
+}
+
+:root[data-theme="dark"] button:not(.g) {
+  color: #0F172A;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Daftar pekerjaan
+   -------------------------------------------------------------------------- */
+
+ul.t {
+  margin: 0;
+  padding-left: 20px;
+}
+
+ul.t li {
+  margin: 6px 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Progress bar
+   -------------------------------------------------------------------------- */
+
+.bar {
+  height: 10px;
+  background: var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 6px 0 4px;
+}
+
+.bar div {
+  height: 100%;
+  width: 0;
+  background: var(--acc);
+  transition: width .3s;
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Panduan pengerjaan (timeline langkah)
+   -------------------------------------------------------------------------- */
+
+ol.steps {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  position: relative;
+}
+
+/* Garis vertikal penghubung */
+ol.steps::before {
+  content: "";
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  bottom: 14px;
+  width: 2px;
+  background: var(--line);
+}
+
+ol.steps li {
+  position: relative;
+  padding: 8px 0 8px 44px;
+}
+
+/* Checkbox bulat */
+ol.steps input {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  appearance: none;
+  border-radius: 50%;
+  border: 2px solid var(--line);
+  background: var(--card);
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+}
+
+ol.steps input:checked {
+  background: var(--acc);
+  border-color: var(--acc);
+}
+
+ol.steps input:checked::after {
+  content: "✓";
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 15px;
+}
+
+ol.steps label {
+  cursor: pointer;
+}
+
+/* Langkah yang sudah selesai */
+ol.steps li.done label {
+  color: var(--mute);
+  text-decoration: line-through;
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Aksesibilitas
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
